@@ -2,6 +2,7 @@ package alessia.cotini.gestioneviaggiaziendali.services;
 
 import alessia.cotini.gestioneviaggiaziendali.entities.Dipendente;
 import alessia.cotini.gestioneviaggiaziendali.entities.Prenotazione;
+import alessia.cotini.gestioneviaggiaziendali.exceptions.BadRequest;
 import alessia.cotini.gestioneviaggiaziendali.exceptions.NotFound;
 import alessia.cotini.gestioneviaggiaziendali.records.DipendenteDTO;
 import alessia.cotini.gestioneviaggiaziendali.records.PrenotazioneDTO;
@@ -36,12 +37,15 @@ public class PrenotazioneService {
     }
 
     public Prenotazione creaNuovaPrenotazione (PrenotazioneDTO payloads){
+        boolean dipendenteImpegnato = prenotazioneRepository.existsByDipendenteAndViaggioDataPartenza(
+                payloads.dipendente(), payloads.viaggio().getDataPartenza()
+        );
+        if(dipendenteImpegnato)throw new BadRequest("Il dipendente è già in viaggio per la data richiesta");
         Prenotazione nuova = new Prenotazione(payloads.preferenze(), payloads.dipendente(), payloads.viaggio());
-        this.prenotazioneRepository.save(nuova);
-        return nuova;
+        return this.prenotazioneRepository.save(nuova);
     }
 
-    public Prenotazione modificaPrenotazione (@PathVariable UUID prenotazioneId, PrenotazioneDTO payloads){
+    public Prenotazione modificaPrenotazione (UUID prenotazioneId, PrenotazioneDTO payloads){
         Prenotazione trovata = prenotazioneRepository.findById(prenotazioneId)
                 .orElseThrow(()-> new NotFound("Prenotazione con id "+ prenotazioneId+ " non è stata trovata."));
         trovata.setPreferenze(payloads.preferenze());
@@ -50,7 +54,7 @@ public class PrenotazioneService {
         return trovata;
     }
 
-    public void eliminaPrenotazione (@PathVariable UUID prenotazioneId){
+    public void eliminaPrenotazione (UUID prenotazioneId){
         Prenotazione trovata = prenotazioneRepository.findById(prenotazioneId)
                 .orElseThrow(()-> new NotFound("Prenotazione con id "+ prenotazioneId+ " non è stata trovata."));
         prenotazioneRepository.delete(trovata);

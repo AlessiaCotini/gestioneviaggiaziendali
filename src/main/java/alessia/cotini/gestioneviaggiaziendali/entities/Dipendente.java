@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -33,6 +34,9 @@ public class Dipendente {
     private String email;
 
     private String profiloImg;
+
+    @OneToMany(mappedBy = "dipendente", cascade = CascadeType.REMOVE)
+    private List<Prenotazione> prenotazioni;
 
     public Dipendente(String username, String name, String surname, String email) {
         this.username = username;

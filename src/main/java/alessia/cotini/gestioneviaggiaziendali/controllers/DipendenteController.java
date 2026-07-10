@@ -92,15 +92,16 @@ public class DipendenteController {
     }
     //PATCH -  http://localhost:3001/dipendenti/{dipendenteID}/creaPrenotazione - PER ASSEGNARE UN VIAGGIO
     @PatchMapping("/{dipendenteId}/aggiungiPrenotazione")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public Prenotazione aggiungiPrenotazionePerCliente(@PathVariable UUID dipendenteId, @RequestParam("prenotazione") Prenotazione prenotazione, @RequestParam("viaggio") Viaggio viaggio) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public Prenotazione aggiungiPrenotazionePerCliente(
+                     @PathVariable UUID dipendenteId,
+                     @RequestParam UUID viaggioId,
+                     @RequestParam(defaultValue = "Nessuna preferenza") String preferenze) {
         try {
-            Dipendente dipendentetrovato = dipendenteService.findById(dipendenteId);
-            if(dipendentetrovato == null) throw new NotFound("Id dell'utente per la prenotazione che stai cercando di creare non è valido");
-            Viaggio viaggiotrovato = viaggioService.findById(viaggio.getViaggioId());
-            if (viaggiotrovato == null)throw new NotFound("Controlla di aver inserito i dati giusti per il viaggio o la prenotazione non andrà a buon fine");
-            PrenotazioneDTO nuovo = new PrenotazioneDTO("Da inserire successivamente", dipendentetrovato, viaggiotrovato);
-            return prenotazioneService.creaNuovaPrenotazione(nuovo);
+            Dipendente dipendenteTrovato = dipendenteService.findById(dipendenteId);
+            Viaggio viaggioTrovato = viaggioService.findById(viaggioId);
+            PrenotazioneDTO payload = new PrenotazioneDTO(preferenze, dipendenteTrovato, viaggioTrovato);
+            return prenotazioneService.creaNuovaPrenotazione(payload);
         } catch (NotFound e) {
             e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Errore nel caricamento della prenotazione : " + e.getMessage());

@@ -37,23 +37,25 @@ public class DipendenteService {
     }
 
     public Dipendente creaNuovoDipendente (DipendenteDTO payloads){
+        if(dipendeteRepository.existsByEmail(payloads.email())){
+            throw new BadRequest("La mail selezionata è gia in uso");
+        }
         Dipendente nuovo = new Dipendente(payloads.username(), payloads.name(), payloads.surname(), payloads.email());
-        if(dipendeteRepository.findAll().contains(nuovo.getEmail())) throw new BadRequest("La mail selezionata risulta essere già utilizzata");
         this.dipendeteRepository.save(nuovo);
         return nuovo;
     }
 
-    public Dipendente modificaDipendente (@PathVariable UUID dipendenteId, DipendenteDTO payloads){
+    public Dipendente modificaDipendente (UUID dipendenteId, DipendenteDTO payloads){
         Dipendente trovato = dipendeteRepository.findById(dipendenteId)
                 .orElseThrow(()-> new NotFound("Dipendente con id "+ dipendenteId+ " non è stato trovato."));
-        trovato.setUsername(payloads.surname());
+        trovato.setUsername(payloads.username());
         trovato.setName(payloads.name());
         trovato.setSurname(payloads.surname());
         trovato.setEmail(payloads.email());
         return trovato;
     }
 
-    public void eliminaDipendente (@PathVariable UUID dipendenteId){
+    public void eliminaDipendente ( UUID dipendenteId){
         Dipendente trovato = dipendeteRepository.findById(dipendenteId)
                 .orElseThrow(()-> new NotFound("Dipendente con id "+ dipendenteId + " non è stato trovato."));
         dipendeteRepository.delete(trovato);

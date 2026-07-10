@@ -1,5 +1,6 @@
 package alessia.cotini.gestioneviaggiaziendali.controllers;
 import alessia.cotini.gestioneviaggiaziendali.entities.Viaggio;
+import alessia.cotini.gestioneviaggiaziendali.enums.StatoViaggio;
 import alessia.cotini.gestioneviaggiaziendali.exceptions.BadRequest;
 import alessia.cotini.gestioneviaggiaziendali.records.ViaggioDTO;
 import alessia.cotini.gestioneviaggiaziendali.services.ViaggioService;
@@ -56,6 +57,11 @@ public class ViaggioController {
         }
         Viaggio modificato = this.viaggioService.modificaViaggio(viaggioId, payloads);
         return ResponseEntity.ok(modificato);
+    }
+    // PATCH - http://localhost:3001/viaggi/{viaggioId}/stato - MODIFICO LO STATO DI UN VIAGGIO
+    @PatchMapping("/{viaggioId}/stato")
+    public Viaggio cambiaStato(@PathVariable UUID viaggioId, @RequestParam StatoViaggio stato) {
+        return this.viaggioService.cambiaStatoViaggio(viaggioId, stato);
     }
     //DELETE - http://localhost:3001/viaggi/{viaggioId} - CANCELLO UN VIAGGIO
     @DeleteMapping("/{viaggioId}")

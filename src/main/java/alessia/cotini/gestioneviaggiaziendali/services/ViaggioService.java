@@ -1,6 +1,7 @@
 package alessia.cotini.gestioneviaggiaziendali.services;
 
 import alessia.cotini.gestioneviaggiaziendali.entities.Viaggio;
+import alessia.cotini.gestioneviaggiaziendali.enums.StatoViaggio;
 import alessia.cotini.gestioneviaggiaziendali.exceptions.NotFound;
 import alessia.cotini.gestioneviaggiaziendali.records.ViaggioDTO;
 import alessia.cotini.gestioneviaggiaziendali.repositories.ViaggioRepository;
@@ -36,7 +37,7 @@ public class ViaggioService {
         return nuovo;
     }
 
-    public Viaggio modificaViaggio (@PathVariable UUID viaggioId, ViaggioDTO payloads){
+    public Viaggio modificaViaggio (UUID viaggioId, ViaggioDTO payloads){
         Viaggio trovato = viaggioRepository.findById(viaggioId)
                 .orElseThrow(()-> new NotFound("Viaggio con id "+ viaggioId+ " non è stato trovato."));
         trovato.setDestinazione(payloads.destinazione());
@@ -44,9 +45,16 @@ public class ViaggioService {
         return trovato;
     }
 
-    public void eliminaViaggio (@PathVariable UUID viaggioId){
+    public void eliminaViaggio (UUID viaggioId){
         Viaggio trovato = viaggioRepository.findById(viaggioId)
                 .orElseThrow(()-> new NotFound("Viaggio con id "+ viaggioId+ " non è stato trovato."));
         viaggioRepository.delete(trovato);
+    }
+
+    public Viaggio cambiaStatoViaggio (UUID viaggioId, StatoViaggio nuovoStato){
+        Viaggio trovato = viaggioRepository.findById(viaggioId)
+                .orElseThrow(()-> new NotFound("Il viaggio con ID : " + viaggioId + " non è stato trovato"));
+        trovato.setStatoViaggio(nuovoStato);
+        return this.viaggioRepository.save(trovato);
     }
 }
