@@ -8,6 +8,7 @@ public class GestioneviaggiaziendaliApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(GestioneviaggiaziendaliApplication.class, args);
+//		System.out.println("Connesso");
 	}
 
 }
