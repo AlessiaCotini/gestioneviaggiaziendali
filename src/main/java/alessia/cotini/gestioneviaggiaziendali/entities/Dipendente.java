@@ -1,5 +1,7 @@
 package alessia.cotini.gestioneviaggiaziendali.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,8 +37,9 @@ public class Dipendente {
 
     private String profiloImg;
 
-    @OneToMany(mappedBy = "dipendente", cascade = CascadeType.REMOVE)
-    private List<Prenotazione> prenotazioni;
+//    @OneToMany(mappedBy = "dipendente", cascade = CascadeType.REMOVE)
+//    @JsonIgnoreProperties("dipendente")
+//    private List<Prenotazione> prenotazioni;
 
     public Dipendente(String username, String name, String surname, String email) {
         this.username = username;

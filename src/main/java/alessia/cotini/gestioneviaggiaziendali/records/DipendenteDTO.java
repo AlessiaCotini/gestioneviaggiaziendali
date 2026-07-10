@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 
 public record DipendenteDTO(
                             @NotBlank(message = "Username necessario")
-                            @Size(min = 2, max = 10, message = "Specificare un username tra due e dieci caratteri")
+                            @Size(min = 2, max = 30, message = "Specificare un username")
                             String username,
 
                             @NotBlank(message = "Il nome è necessario")
@@ -14,7 +14,7 @@ public record DipendenteDTO(
                             String name,
 
                             @NotBlank(message = "Il cognome è necessario")
-                            @Size(min = 1, max = 10, message = "Specificare un cognome tra uno e dieci caratteri")
+                            @Size(min = 1, max = 20, message = "Specificare un cognome tra uno e venti caratteri")
                             String surname,
 
                             @NotBlank(message = "L'email è necessaria")

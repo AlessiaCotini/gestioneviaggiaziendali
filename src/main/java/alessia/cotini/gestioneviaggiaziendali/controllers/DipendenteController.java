@@ -39,7 +39,7 @@ public class DipendenteController {
         this.viaggioService = viaggioService;
     }
 
-    //GET - http://localhost:3001/dipendenti - CERCO TUTTI I DIPENDENTI
+    //GET - - CERCO TUTTI I DIPENDENTI
     @GetMapping
     public Page<Dipendente> getAll(@RequestParam(value = "page", defaultValue = "0") int page){
         return this.dipendenteService.findAll(page);
@@ -97,17 +97,9 @@ public class DipendenteController {
                      @PathVariable UUID dipendenteId,
                      @RequestParam UUID viaggioId,
                      @RequestParam(defaultValue = "Nessuna preferenza") String preferenze) {
-        try {
             Dipendente dipendenteTrovato = dipendenteService.findById(dipendenteId);
             Viaggio viaggioTrovato = viaggioService.findById(viaggioId);
             PrenotazioneDTO payload = new PrenotazioneDTO(preferenze, dipendenteTrovato, viaggioTrovato);
             return prenotazioneService.creaNuovaPrenotazione(payload);
-        } catch (NotFound e) {
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Errore nel caricamento della prenotazione : " + e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Errore generico nel caricamento della prenotazione : " + e.getMessage());
-        }
     }
 }

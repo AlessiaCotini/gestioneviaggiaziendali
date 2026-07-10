@@ -1,6 +1,7 @@
 package alessia.cotini.gestioneviaggiaziendali.records;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
@@ -9,6 +10,6 @@ public record ViaggioDTO(
                          @NotBlank(message = "Destinazione necessaria")
                          String destinazione,
 
-                         @NotBlank(message = "Data prevista per la partenza necessaria")
+                         @NotNull(message = "La data di partenza è obbligatoria")
                          LocalDate dataPartenza) {
 }
