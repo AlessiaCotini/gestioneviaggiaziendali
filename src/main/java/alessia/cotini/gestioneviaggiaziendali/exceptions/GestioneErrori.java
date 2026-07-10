@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class GestioneErrori {
     @ExceptionHandler(BadRequest.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)

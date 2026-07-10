@@ -76,7 +76,7 @@ public class DipendenteController {
     public void rimuovoDipendente(@PathVariable UUID dipendenteId){
         this.dipendenteService.eliminaDipendente(dipendenteId);
     }
-    //PATCH -  http://localhost:3001/dipendenti/{dipendenteId}/cambiaImg - CAMBIO IMMAGINE DEL PROFILO DI UN DIPENDENTE
+    //PATCH -  http://localhost:3001/dipendenti/{dipendenteId}/cambiaImgProfilo - CAMBIO IMMAGINE DEL PROFILO DI UN DIPENDENTE
     @PatchMapping("/{dipendenteId}/cambiaImgProfilo")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public String cambiaImgProfilo(@PathVariable UUID dipendenteId, @RequestParam("avatar") MultipartFile file) {
@@ -99,7 +99,7 @@ public class DipendenteController {
                      @RequestParam(defaultValue = "Nessuna preferenza") String preferenze) {
             Dipendente dipendenteTrovato = dipendenteService.findById(dipendenteId);
             Viaggio viaggioTrovato = viaggioService.findById(viaggioId);
-            PrenotazioneDTO payload = new PrenotazioneDTO(preferenze, dipendenteTrovato, viaggioTrovato);
+            PrenotazioneDTO payload = new PrenotazioneDTO(preferenze, dipendenteTrovato.getDipendenteId(), viaggioTrovato.getViaggioId());
             return prenotazioneService.creaNuovaPrenotazione(payload);
     }
 }

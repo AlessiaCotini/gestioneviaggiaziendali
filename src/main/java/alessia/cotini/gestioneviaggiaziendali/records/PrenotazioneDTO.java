@@ -1,18 +1,16 @@
 package alessia.cotini.gestioneviaggiaziendali.records;
+import jakarta.validation.constraints.NotNull;
 
-import alessia.cotini.gestioneviaggiaziendali.entities.Dipendente;
-import alessia.cotini.gestioneviaggiaziendali.entities.Viaggio;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+
+import java.util.UUID;
 
 public record PrenotazioneDTO(
-                              @NotBlank(message = "Inserire delle preferenze o note specifiche")
-                              @Size(min = 2, max = 150, message = "Inserire un massimo di 150 caratteri")
+
                               String preferenze,
 
-                              @NotBlank(message = "Associare un dipendente al viaggio")
-                              Dipendente dipendente,
+                              @NotNull(message = "Associare un dipendente al viaggio")
+                              UUID dipendenteId,
 
-                              @NotBlank(message = "Associare un viaggio alla prenotazione")
-                              Viaggio viaggio) {
+                              @NotNull(message = "Associare un viaggio alla prenotazione")
+                              UUID viaggioId) {
 }

@@ -16,7 +16,7 @@ public class CloudinaryConfig {
             @Value("${cloudinary.api.key}") String key,
             @Value("${cloudinary.api.secret}") String secret){
         Map<String, String> config = new HashMap<>();
-        config.put("name", name);
+        config.put("cloud_name", name);
         config.put("api_key", key);
         config.put("api_secret", secret);
 
